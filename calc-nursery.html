@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BSF Calculator - Contact Update</title>
+  <title>BSF Nursery Calculator - Dr.Nopphasul</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
@@ -16,6 +16,7 @@
       align-items: center; 
       min-height: 100vh; 
       margin: 0; 
+      padding: 20px;
     }
     .card { 
       background: white; 
@@ -32,6 +33,7 @@
     input { 
       width: 100%; padding: 12px; margin-bottom: 20px; 
       border: 2px solid #eee; border-radius: 10px; box-sizing: border-box; 
+      font-family: 'Kanit'; font-size: 1rem;
     }
     button.main-btn { 
       width: 100%; padding: 15px; border: none; border-radius: 10px; 
@@ -40,27 +42,28 @@
     }
     button.main-btn:hover { background-color: #388e3c; }
     
+    /* ปุ่มกลับหน้าแรก */
+    .home-btn {
+      display: block; width: 100%; padding: 12px; margin-top: 15px;
+      border: 1px solid #ccc; border-radius: 10px; background-color: #f8f8f8;
+      color: #666; text-align: center; text-decoration: none; font-size: 0.95rem;
+      box-sizing: border-box; transition: 0.3s;
+    }
+    .home-btn:hover { background-color: #eee; color: #333; }
+
     #result-area { 
       margin-top: 25px; padding: 20px; border-radius: 12px; 
       background-color: #e8f5e9; display: none; text-align: center; border: 1px solid #c8e6c9; 
     }
     .result-value { font-size: 2rem; font-weight: bold; color: #1b5e20; display: block; }
     
-    /* ส่วนเครดิตและปุ่มติดต่อ */
     .footer { text-align: center; margin-top: 10px; }
-    .footer-text { font-size: 0.85rem; color: #777; margin-bottom: 15px; }
-    .social-links { display: flex; justify-content: center; gap: 15px; }
+    .footer-text { font-size: 0.85rem; color: #777; margin-bottom: 15px; line-height: 1.5; }
+    .social-links { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
     .social-btn {
-      text-decoration: none;
-      padding: 8px 15px;
-      border-radius: 25px;
-      font-size: 0.85rem;
-      font-weight: 400;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: opacity 0.3s;
-      color: white;
+      text-decoration: none; padding: 8px 15px; border-radius: 25px;
+      font-size: 0.85rem; display: flex; align-items: center; gap: 8px;
+      color: white; transition: opacity 0.3s;
     }
     .social-btn:hover { opacity: 0.8; }
     .fb-color { background-color: #1877F2; }
@@ -71,7 +74,7 @@
 
 <div class="card">
   <h2>โปรแกรมคำนวณ BSF</h2>
-  <p class="subtitle">กรอกขนาดของภาชนะ ในหน่วยเซนติเมตร</p>
+  <p class="subtitle">คำนวณปริมาณไข่สำหรับการอนุบาลหนอน</p>
   
   <label>ความกว้างภาชนะ (ซม.)</label>
   <input type="number" id="width" placeholder="ระบุตัวเลข..." step="any">
@@ -86,17 +89,24 @@
     <span id="output" class="result-value">0</span>
     <span style="color: #2e7d32;">กรัม</span>
   </div>
+
+  <a href="https://nopphasuls-ops.github.io/bsf-calc/" target="_top" class="home-btn">
+    <i class="fas fa-home"></i> กลับหน้าแรก
+  </a>
 </div>
 
 <div class="footer">
-  <div class="footer-text">พัฒนาโดย <strong>[ชื่อของคุณ/ทีมงาน]</strong></div>
+  <div class="footer-text">
+    พัฒนาโดย <strong>อาจารย์ ดร.นภศูล ศิริจันทร์</strong><br>
+    มหาวิทยาลัยราชภัฏร้อยเอ็ด
+  </div>
   
   <div class="social-links">
-    <a href="https://facebook.com/yourpage" target="_blank" class="social-btn fb-color">
+    <a href="https://facebook.com/ap.nopphasul" target="_blank" class="social-btn fb-color">
       <i class="fab fa-facebook"></i> Facebook
     </a>
     
-    <a href="https://line.me/ti/p/~yourid" target="_blank" class="social-btn line-color">
+    <a href="https://lin.ee/LUeLnAC" target="_blank" class="social-btn line-color">
       <i class="fab fa-line"></i> Line
     </a>
   </div>
@@ -107,12 +117,12 @@
     const w = parseFloat(document.getElementById('width').value);
     const l = parseFloat(document.getElementById('length').value);
     
-    if(!isNaN(w) && !isNaN(l)) {
+    if(!isNaN(w) && !isNaN(l) && w > 0 && l > 0) {
       const result = w * l * 0.01;
       document.getElementById('result-area').style.display = 'block';
       document.getElementById('output').innerText = result.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
     } else {
-      alert("กรุณากรอกตัวเลขให้ครบถ้วน");
+      alert("กรุณากรอกตัวเลขให้ครบถ้วนและถูกต้อง");
     }
   }
 </script>
