@@ -44,7 +44,7 @@
     }
     button.main-btn:hover { background-color: #2e7d32; }
     
-    /* สไตล์ปุ่ม Action ด้านล่าง */
+    /* สไตล์กลุ่มปุ่ม Action ด้านล่าง */
     .action-buttons {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -101,21 +101,21 @@
 
 <div class="card">
   <h2>โปรแกรมคำนวณย้ายลงบ่อปูน</h2>
-  <p class="subtitle">คำนวณการย้ายหนอน BSF อายุ 5 วัน ลงในบ่อปูน (แนวราบ)</p>
+  <p class="subtitle">คำนวณการย้ายหนอน BSF อายุ 5 วัน ลงในบ่อปูนสำหรับการเลี้ยงในแนวราบ</p>
   
   <label>ความกว้างของบ่อ (เมตร)</label>
-  <input type="number" id="w" placeholder="ระบุตัวเลข (เมตร)..." step="0.01">
+  <input type="number" id="w" placeholder="ระบุความกว้าง (เมตร)..." step="0.01">
   
   <label>ความยาวของบ่อ (เมตร)</label>
-  <input type="number" id="l" placeholder="ระบุตัวเลข (เมตร)..." step="0.01">
+  <input type="number" id="l" placeholder="ระบุความยาว (เมตร)..." step="0.01">
   
   <label>วัตถุประสงค์ในการเลี้ยง:</label>
   <div class="radio-group">
     <label class="radio-item">
-      <input type="radio" name="purpose" value="4" checked> พ่อแม่พันธุ์ (เน้นตัวโต)
+      <input type="radio" name="purpose" value="4" checked> พ่อแม่พันธุ์ (เลี้ยงบาง)
     </label>
     <label class="radio-item">
-      <input type="radio" name="purpose" value="9"> เลี้ยงใช้งาน (ผลิตโปรตีน กินอาหารหมดเร็ว)
+      <input type="radio" name="purpose" value="9"> เลี้ยงใช้งาน (ผลิตโปรตีน)
     </label>
   </div>
   
@@ -166,7 +166,7 @@
     const input3 = parseFloat(radioBtn.value);
     
     if(!isNaN(w) && !isNaN(l) && w > 0 && l > 0) {
-      // สูตรใหม่: (กว้าง * ยาว * ปัจจัย * 10000)
+      // สูตรคำนวณตามที่อาจารย์ระบุ
       const X = (w * l * input3 * 10000) / 300;
       const Y = (w * l * input3 * 10000) / 90000;
       
@@ -183,9 +183,14 @@
   }
 
   function resetForm() {
+    // ล้างค่าข้อมูลในช่อง Input
     document.getElementById('w').value = '';
     document.getElementById('l').value = '';
+    
+    // ซ่อนพื้นที่แสดงผลลัพธ์
     document.getElementById('result-area').style.display = 'none';
+    
+    // เลื่อนหน้าจอกลับขึ้นด้านบนแบบนุ่มนวล
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 </script>
