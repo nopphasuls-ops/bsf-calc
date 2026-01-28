@@ -44,11 +44,35 @@
     }
     button.main-btn:hover { background-color: #2e7d32; }
     
+    /* สไตล์ปุ่ม Action ด้านล่าง */
+    .action-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    .reset-btn {
+      padding: 12px;
+      border: 1px solid #ffcdd2;
+      border-radius: 10px;
+      background-color: #ffebee;
+      color: #c62828;
+      cursor: pointer;
+      font-family: 'Kanit';
+      font-size: 0.95rem;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .reset-btn:hover { background-color: #ef9a9a; color: white; }
+
     .home-btn {
-      display: block; width: 100%; padding: 12px; margin-top: 15px;
-      border: 1px solid #ccc; border-radius: 10px; background-color: #f8f8f8;
-      color: #666; text-align: center; text-decoration: none; font-size: 0.95rem;
-      box-sizing: border-box; transition: 0.3s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 10px; 
+      background-color: #f8f8f8; color: #666; text-align: center; 
+      text-decoration: none; font-size: 0.95rem; box-sizing: border-box; transition: 0.3s;
     }
     .home-btn:hover { background-color: #eee; color: #333; }
 
@@ -77,13 +101,13 @@
 
 <div class="card">
   <h2>โปรแกรมคำนวณย้ายลงบ่อปูน</h2>
-  <p class="subtitle">คำนวณการย้ายหนอน BSF อายุ 5 วัน ลงในบ่อปูน</p>
+  <p class="subtitle">คำนวณการย้ายหนอน BSF อายุ 5 วัน ลงในบ่อปูน (แนวราบ)</p>
   
-  <label>ความกว้างของบ่อ (ซม.)</label>
-  <input type="number" id="w" placeholder="ระบุตัวเลข..." step="any">
+  <label>ความกว้างของบ่อ (เมตร)</label>
+  <input type="number" id="w" placeholder="ระบุตัวเลข (เมตร)..." step="0.01">
   
-  <label>ความยาวของบ่อ (ซม.)</label>
-  <input type="number" id="l" placeholder="ระบุตัวเลข..." step="any">
+  <label>ความยาวของบ่อ (เมตร)</label>
+  <input type="number" id="l" placeholder="ระบุตัวเลข (เมตร)..." step="0.01">
   
   <label>วัตถุประสงค์ในการเลี้ยง:</label>
   <div class="radio-group">
@@ -101,12 +125,17 @@
     <div style="color: #2e7d32; margin-bottom: 5px; font-size: 0.95rem;">ปริมาณ BSF อายุ 5 วันที่เหมาะสมคือ</div>
     <span id="resX" class="res-val">0</span> <span style="font-weight: bold; color: #1b5e20;">กรัม</span>
     <div style="margin: 8px 0; color: #666; font-size: 0.9rem;">หรือ</div>
-    <span id="resY" class="res-val">0</span> <span style="font-weight: bold; color: #1b5e20;">ช้อนโต๊ะ</span>
+    <span id="resY" class="res-val">0</span> <span style="font-weight: bold; color: #1b5e20;">ลิตร</span>
   </div>
 
-  <a href="https://nopphasuls-ops.github.io/bsf-calc/" target="_top" class="home-btn">
-    <i class="fas fa-home"></i> กลับหน้าแรก
-  </a>
+  <div class="action-buttons">
+    <button class="reset-btn" onclick="resetForm()">
+      <i class="fas fa-undo"></i> ล้างค่า
+    </button>
+    <a href="https://nopphasuls-ops.github.io/bsf-calc/" target="_top" class="home-btn">
+      <i class="fas fa-home"></i> หน้าแรก
+    </a>
+  </div>
 
   <div class="note">
     <strong>หมายเหตุ:</strong> เป็นค่าประมาณการจากผลการคำนวณด้วย AI และงานวิจัยที่รวบรวมได้
@@ -137,8 +166,9 @@
     const input3 = parseFloat(radioBtn.value);
     
     if(!isNaN(w) && !isNaN(l) && w > 0 && l > 0) {
-      const X = (w * l * input3) / 300;
-      const Y = (w * l * input3) / 1200;
+      // สูตรใหม่: (กว้าง * ยาว * ปัจจัย * 10000)
+      const X = (w * l * input3 * 10000) / 300;
+      const Y = (w * l * input3 * 10000) / 90000;
       
       const resultArea = document.getElementById('result-area');
       resultArea.style.display = 'block';
@@ -148,8 +178,15 @@
       
       resultArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     } else {
-      alert("กรุณากรอกข้อมูลให้ครบถ้วน");
+      alert("กรุณากรอกข้อมูลขนาดบ่อให้ถูกต้อง");
     }
+  }
+
+  function resetForm() {
+    document.getElementById('w').value = '';
+    document.getElementById('l').value = '';
+    document.getElementById('result-area').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 </script>
 
