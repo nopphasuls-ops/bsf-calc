@@ -1,77 +1,131 @@
 <!DOCTYPE html>
-<html>
+<html lang="th">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BSF Tray Calculator - Dr.Nopphasul</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
-    body { font-family: 'Kanit', sans-serif; margin: 0; padding: 10px; background-color: transparent; }
-    .embed-card { 
-      background: white; padding: 25px; border-radius: 15px; 
-      border: 1px solid #e0e6e0; box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      max-width: 450px; margin: auto;
+    body { 
+      font-family: 'Kanit', sans-serif; 
+      margin: 0; 
+      padding: 20px; 
+      background-color: #f0f4f0; 
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
     }
-    h3 { color: #2e7d32; text-align: center; margin-top: 0; margin-bottom: 5px; }
-    .subtitle { font-size: 0.85rem; color: #666; text-align: center; margin-bottom: 20px; line-height: 1.4; }
-    label { display: block; margin-bottom: 5px; font-weight: 600; color: #444; font-size: 0.95rem; }
+    .card { 
+      background: white; padding: 2.5rem; border-radius: 20px; 
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      width: 90%; max-width: 400px; margin-bottom: 20px;
+    }
+    h2 { color: #2e7d32; text-align: center; margin-top: 0; margin-bottom: 5px; }
+    .subtitle { font-size: 0.85rem; color: #666; text-align: center; margin-bottom: 25px; line-height: 1.4; }
+    label { display: block; margin-bottom: 8px; font-weight: 600; color: #444; font-size: 0.95rem; }
+    
     input[type="number"] { 
-      width: 100%; padding: 12px; margin-bottom: 15px; 
+      width: 100%; padding: 12px; margin-bottom: 20px; 
       border: 2px solid #eee; border-radius: 10px; box-sizing: border-box; 
       font-size: 1rem; font-family: 'Kanit';
     }
-    .checkbox-group { margin-bottom: 20px; padding: 10px; background: #f9f9f9; border-radius: 10px; }
-    .checkbox-item { display: flex; align-items: center; margin-bottom: 8px; cursor: pointer; }
-    .checkbox-item input { margin-right: 10px; transform: scale(1.2); cursor: pointer; }
     
-    button { 
+    .radio-group { margin-bottom: 20px; padding: 15px; background: #f9f9f9; border-radius: 10px; border: 1px solid #eee; }
+    .radio-item { display: flex; align-items: center; margin-bottom: 10px; cursor: pointer; }
+    .radio-item:last-child { margin-bottom: 0; }
+    .radio-item input[type="radio"] { margin-right: 12px; transform: scale(1.3); accent-color: #2e7d32; }
+    
+    button.main-btn { 
       width: 100%; padding: 15px; border: none; border-radius: 10px; 
       background-color: #2e7d32; color: white; font-size: 1.1rem; 
       font-weight: 600; cursor: pointer; transition: 0.3s;
     }
-    button:hover { background-color: #1b5e20; }
+    button.main-btn:hover { background-color: #1b5e20; }
     
+    .home-btn {
+      display: block; width: 100%; padding: 12px; margin-top: 15px;
+      border: 1px solid #ccc; border-radius: 10px; background-color: #f8f8f8;
+      color: #666; text-align: center; text-decoration: none; font-size: 0.95rem;
+      box-sizing: border-box; transition: 0.3s;
+    }
+    .home-btn:hover { background-color: #eee; color: #333; }
+
     #result-area { 
-      margin-top: 20px; padding: 20px; border-radius: 10px; 
+      margin-top: 25px; padding: 20px; border-radius: 12px; 
       background-color: #e8f5e9; display: none; text-align: center; 
       border: 1px solid #c8e6c9; animation: fadeIn 0.4s;
     }
-    .res-val { font-size: 1.5rem; font-weight: bold; color: #1b5e20; }
-    .note { font-size: 0.75rem; color: #888; margin-top: 15px; text-align: center; line-height: 1.4; }
+    .res-val { font-size: 2rem; font-weight: bold; color: #1b5e20; display: block; }
+    
+    .footer { text-align: center; margin-top: 10px; }
+    .footer-text { font-size: 0.85rem; color: #777; margin-bottom: 15px; line-height: 1.5; }
+    .social-links { display: flex; justify-content: center; gap: 10px; }
+    .social-btn {
+      text-decoration: none; padding: 8px 15px; border-radius: 25px;
+      font-size: 0.85rem; display: flex; align-items: center; gap: 8px;
+      color: white; transition: 0.3s;
+    }
+    .fb-color { background-color: #1877F2; }
+    .line-color { background-color: #06C755; }
+    .note { font-size: 0.75rem; color: #888; margin-top: 20px; text-align: center; line-height: 1.5; border-top: 1px solid #eee; padding-top: 10px; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   </style>
 </head>
 <body>
 
-<div class="embed-card">
-  <h3>โปรแกรมคำนวณย้ายลงกระบะ</h3>
-  <p class="subtitle">ใช้สำหรับคำนวณการย้ายหนอน BSF อายุ 5 วัน ลงในกระบะเลี้ยง กรอกขนาดและเลือกวัตถุประสงค์</p>
+<div class="card">
+  <h2>โปรแกรมคำนวณย้ายลงกระบะ</h2>
+  <p class="subtitle">คำนวณการย้ายหนอน BSF อายุ 5 วัน ลงในกระบะเลี้ยง</p>
   
   <label>ความกว้างกระบะ (ซม.)</label>
-  <input type="number" id="w" placeholder="ระบุความกว้าง..." step="any">
+  <input type="number" id="w" placeholder="ระบุตัวเลข..." step="any">
   
   <label>ความยาวกระบะ (ซม.)</label>
-  <input type="number" id="l" placeholder="ระบุความยาว..." step="any">
+  <input type="number" id="l" placeholder="ระบุตัวเลข..." step="any">
   
   <label>วัตถุประสงค์ในการเลี้ยง:</label>
-  <div class="checkbox-group">
-    <label class="checkbox-item">
+  <div class="radio-group">
+    <label class="radio-item">
       <input type="radio" name="purpose" value="4" checked> พ่อแม่พันธุ์
     </label>
-    <label class="checkbox-item">
+    <label class="radio-item">
       <input type="radio" name="purpose" value="9"> เลี้ยงใช้งาน (ผลิตโปรตีน)
     </label>
   </div>
   
-  <button onclick="calcTray()">กดเพื่อคำนวณ</button>
+  <button class="main-btn" onclick="calcTray()">กดเพื่อคำนวณ</button>
   
   <div id="result-area">
-    <div style="color: #2e7d32; margin-bottom: 10px;">ปริมาณ BSF อายุ 5 วันที่เหมาะสมต่อหนึ่งกระบะคือ</div>
-    <span id="resX" class="res-val">0</span> <span style="font-weight:bold;">กรัม</span>
-    <div style="margin: 5px 0; color: #666;">หรือ</div>
-    <span id="resY" class="res-val">0</span> <span style="font-weight:bold;">ช้อนโต๊ะ</span>
+    <div style="color: #2e7d32; margin-bottom: 5px; font-size: 0.95rem;">ปริมาณ BSF ที่เหมาะสมคือ</div>
+    <span id="resX" class="res-val">0</span> <span style="font-weight: bold; color: #1b5e20;">กรัม</span>
+    <div style="margin: 8px 0; color: #666; font-size: 0.9rem;">หรือ</div>
+    <span id="resY" class="res-val">0</span> <span style="font-weight: bold; color: #1b5e20;">ช้อนโต๊ะ</span>
   </div>
+
+  <a href="https://nopphasuls-ops.github.io/bsf-calc/" target="_top" class="home-btn">
+    <i class="fas fa-home"></i> กลับหน้าแรก
+  </a>
 
   <div class="note">
     <strong>หมายเหตุ:</strong> เป็นค่าประมาณการจากผลการคำนวณด้วย AI และงานวิจัยที่รวบรวมได้
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-text">
+    พัฒนาโดย <strong>อาจารย์ ดร.นภศูล ศิริจันทร์</strong><br>
+    มหาวิทยาลัยราชภัฏร้อยเอ็ด
+  </div>
+  
+  <div class="social-links">
+    <a href="https://facebook.com/ap.nopphasul" target="_blank" class="social-btn fb-color">
+      <i class="fab fa-facebook"></i> Facebook
+    </a>
+    <a href="https://lin.ee/LUeLnAC" target="_blank" class="social-btn line-color">
+      <i class="fab fa-line"></i> Line
+    </a>
   </div>
 </div>
 
@@ -79,18 +133,20 @@
   function calcTray() {
     const w = parseFloat(document.getElementById('w').value);
     const l = parseFloat(document.getElementById('l').value);
-    const input3 = parseFloat(document.querySelector('input[name="purpose"]:checked').value);
+    const radioBtn = document.querySelector('input[name="purpose"]:checked');
+    const input3 = parseFloat(radioBtn.value);
     
-    if(!isNaN(w) && !isNaN(l)) {
-      // สูตรคำนวณตามที่คุณกำหนด
+    if(!isNaN(w) && !isNaN(l) && w > 0 && l > 0) {
       const X = (w * l * input3) / 300;
       const Y = (w * l * input3) / 1200;
       
-      document.getElementById('result-area').style.display = 'block';
+      const resultArea = document.getElementById('result-area');
+      resultArea.style.display = 'block';
+      
       document.getElementById('resX').innerText = X.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
       document.getElementById('resY').innerText = Y.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
     } else {
-      alert("กรุณากรอกขนาดกระบะให้ครบถ้วน");
+      alert("กรุณากรอกข้อมูลขนาดกระบะให้ถูกต้องและครบถ้วน");
     }
   }
 </script>
