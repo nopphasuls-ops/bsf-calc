@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BSF Calculator - Contact Update</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body { 
+      font-family: 'Kanit', sans-serif; 
+      background-color: #f0f4f0; 
+      display: flex; 
+      flex-direction: column; 
+      justify-content: center; 
+      align-items: center; 
+      min-height: 100vh; 
+      margin: 0; 
+    }
+    .card { 
+      background: white; 
+      padding: 2.5rem; 
+      border-radius: 20px; 
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
+      width: 90%; 
+      max-width: 400px; 
+      margin-bottom: 20px; 
+    }
+    h2 { color: #2e7d32; text-align: center; margin-top: 0; }
+    p.subtitle { color: #666; text-align: center; font-size: 0.9rem; margin-bottom: 25px; }
+    label { display: block; margin-bottom: 8px; font-weight: 600; color: #444; }
+    input { 
+      width: 100%; padding: 12px; margin-bottom: 20px; 
+      border: 2px solid #eee; border-radius: 10px; box-sizing: border-box; 
+    }
+    button.main-btn { 
+      width: 100%; padding: 15px; border: none; border-radius: 10px; 
+      background-color: #4caf50; color: white; font-size: 1.1rem; 
+      font-weight: 600; cursor: pointer; transition: background 0.3s; 
+    }
+    button.main-btn:hover { background-color: #388e3c; }
+    
+    #result-area { 
+      margin-top: 25px; padding: 20px; border-radius: 12px; 
+      background-color: #e8f5e9; display: none; text-align: center; border: 1px solid #c8e6c9; 
+    }
+    .result-value { font-size: 2rem; font-weight: bold; color: #1b5e20; display: block; }
+    
+    /* ส่วนเครดิตและปุ่มติดต่อ */
+    .footer { text-align: center; margin-top: 10px; }
+    .footer-text { font-size: 0.85rem; color: #777; margin-bottom: 15px; }
+    .social-links { display: flex; justify-content: center; gap: 15px; }
+    .social-btn {
+      text-decoration: none;
+      padding: 8px 15px;
+      border-radius: 25px;
+      font-size: 0.85rem;
+      font-weight: 400;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: opacity 0.3s;
+      color: white;
+    }
+    .social-btn:hover { opacity: 0.8; }
+    .fb-color { background-color: #1877F2; }
+    .line-color { background-color: #06C755; }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h2>โปรแกรมคำนวณ BSF</h2>
+  <p class="subtitle">กรอกขนาดของภาชนะ ในหน่วยเซนติเมตร</p>
+  
+  <label>ความกว้างภาชนะ (ซม.)</label>
+  <input type="number" id="width" placeholder="ระบุตัวเลข..." step="any">
+  
+  <label>ความยาวภาชนะ (ซม.)</label>
+  <input type="number" id="length" placeholder="ระบุตัวเลข..." step="any">
+  
+  <button class="main-btn" onclick="calculate()">กดเพื่อคำนวณ</button>
+  
+  <div id="result-area">
+    <span style="color: #2e7d32;">ปริมาณไข่ BSF ที่เหมาะสมคือ</span>
+    <span id="output" class="result-value">0</span>
+    <span style="color: #2e7d32;">กรัม</span>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-text">พัฒนาโดย <strong>[ชื่อของคุณ/ทีมงาน]</strong></div>
+  
+  <div class="social-links">
+    <a href="https://facebook.com/yourpage" target="_blank" class="social-btn fb-color">
+      <i class="fab fa-facebook"></i> Facebook
+    </a>
+    
+    <a href="https://line.me/ti/p/~yourid" target="_blank" class="social-btn line-color">
+      <i class="fab fa-line"></i> Line
+    </a>
+  </div>
+</div>
+
+<script>
+  function calculate() {
+    const w = parseFloat(document.getElementById('width').value);
+    const l = parseFloat(document.getElementById('length').value);
+    
+    if(!isNaN(w) && !isNaN(l)) {
+      const result = w * l * 0.01;
+      document.getElementById('result-area').style.display = 'block';
+      document.getElementById('output').innerText = result.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    } else {
+      alert("กรุณากรอกตัวเลขให้ครบถ้วน");
+    }
+  }
+</script>
+
+</body>
+</html>
