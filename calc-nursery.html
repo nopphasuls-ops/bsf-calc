@@ -42,18 +42,42 @@
     }
     button.main-btn:hover { background-color: #388e3c; }
     
-    /* ปุ่มกลับหน้าแรก */
+    /* สไตล์กลุ่มปุ่ม Action ด้านล่าง */
+    .action-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    .reset-btn {
+      padding: 12px;
+      border: 1px solid #ffcdd2;
+      border-radius: 10px;
+      background-color: #ffebee;
+      color: #c62828;
+      cursor: pointer;
+      font-family: 'Kanit';
+      font-size: 0.95rem;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .reset-btn:hover { background-color: #ef9a9a; color: white; }
+
     .home-btn {
-      display: block; width: 100%; padding: 12px; margin-top: 15px;
-      border: 1px solid #ccc; border-radius: 10px; background-color: #f8f8f8;
-      color: #666; text-align: center; text-decoration: none; font-size: 0.95rem;
-      box-sizing: border-box; transition: 0.3s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 10px; 
+      background-color: #f8f8f8; color: #666; text-align: center; 
+      text-decoration: none; font-size: 0.95rem; box-sizing: border-box; transition: 0.3s;
     }
     .home-btn:hover { background-color: #eee; color: #333; }
 
     #result-area { 
       margin-top: 25px; padding: 20px; border-radius: 12px; 
       background-color: #e8f5e9; display: none; text-align: center; border: 1px solid #c8e6c9; 
+      animation: fadeIn 0.4s;
     }
     .result-value { font-size: 2rem; font-weight: bold; color: #1b5e20; display: block; }
     
@@ -68,6 +92,7 @@
     .social-btn:hover { opacity: 0.8; }
     .fb-color { background-color: #1877F2; }
     .line-color { background-color: #06C755; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   </style>
 </head>
 <body>
@@ -90,9 +115,14 @@
     <span style="color: #2e7d32;">กรัม</span>
   </div>
 
-  <a href="https://nopphasuls-ops.github.io/bsf-calc/" target="_top" class="home-btn">
-    <i class="fas fa-home"></i> กลับหน้าแรก
-  </a>
+  <div class="action-buttons">
+    <button class="reset-btn" onclick="resetForm()">
+      <i class="fas fa-undo"></i> ล้างค่า
+    </button>
+    <a href="https://nopphasuls-ops.github.io/bsf-calc/" target="_top" class="home-btn">
+      <i class="fas fa-home"></i> หน้าแรก
+    </a>
+  </div>
 </div>
 
 <div class="footer">
@@ -105,7 +135,6 @@
     <a href="https://facebook.com/ap.nopphasul" target="_blank" class="social-btn fb-color">
       <i class="fab fa-facebook"></i> Facebook
     </a>
-    
     <a href="https://lin.ee/LUeLnAC" target="_blank" class="social-btn line-color">
       <i class="fab fa-line"></i> Line
     </a>
@@ -119,11 +148,27 @@
     
     if(!isNaN(w) && !isNaN(l) && w > 0 && l > 0) {
       const result = w * l * 0.01;
-      document.getElementById('result-area').style.display = 'block';
+      const resArea = document.getElementById('result-area');
+      resArea.style.display = 'block';
       document.getElementById('output').innerText = result.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      
+      // เลื่อนหน้าจอลงมาดูผลลัพธ์แบบนุ่มนวล
+      resArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     } else {
       alert("กรุณากรอกตัวเลขให้ครบถ้วนและถูกต้อง");
     }
+  }
+
+  function resetForm() {
+    // ล้างค่าใน Input
+    document.getElementById('width').value = '';
+    document.getElementById('length').value = '';
+    
+    // ซ่อนพื้นที่แสดงผลลัพธ์
+    document.getElementById('result-area').style.display = 'none';
+    
+    // เลื่อนหน้าจอกลับขึ้นด้านบน
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 </script>
 
