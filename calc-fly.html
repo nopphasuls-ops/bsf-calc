@@ -31,9 +31,8 @@
     p.subtitle { color: #666; text-align: center; font-size: 0.9rem; margin-bottom: 25px; line-height: 1.4; }
     label { display: block; margin-bottom: 8px; font-weight: 600; color: #444; font-size: 0.95rem; }
     
-    .input-group-custom { margin-bottom: 15px; }
     input { 
-      width: 100%; padding: 12px; margin-bottom: 5px; 
+      width: 100%; padding: 12px; margin-bottom: 15px; 
       border: 2px solid #eee; border-radius: 10px; box-sizing: border-box; 
       font-family: 'Kanit'; font-size: 1rem;
     }
@@ -45,11 +44,35 @@
     }
     button.main-btn:hover { background-color: #1b5e20; }
     
+    /* สไตล์ปุ่ม Action ด้านล่าง */
+    .action-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    .reset-btn {
+      padding: 12px;
+      border: 1px solid #ffcdd2;
+      border-radius: 10px;
+      background-color: #ffebee;
+      color: #c62828;
+      cursor: pointer;
+      font-family: 'Kanit';
+      font-size: 0.95rem;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .reset-btn:hover { background-color: #ef9a9a; color: white; }
+
     .home-btn {
-      display: block; width: 100%; padding: 12px; margin-top: 15px;
-      border: 1px solid #ccc; border-radius: 10px; background-color: #f8f8f8;
-      color: #666; text-align: center; text-decoration: none; font-size: 0.95rem;
-      box-sizing: border-box; transition: 0.3s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 10px; 
+      background-color: #f8f8f8; color: #666; text-align: center; 
+      text-decoration: none; font-size: 0.95rem; box-sizing: border-box; transition: 0.3s;
     }
     .home-btn:hover { background-color: #eee; color: #333; }
 
@@ -82,26 +105,20 @@
   <h2>โปรแกรมคำนวณดักแด้เข้าโรงบิน</h2>
   <p class="subtitle">ประมาณการปริมาณดักแด้และไข่ที่ได้<br>ตามขนาดโรงบิน (หน่วย: เมตร)</p>
   
-  <div class="input-group-custom">
-    <label>ความกว้าง (เมตร)</label>
-    <input type="number" id="width" placeholder="เช่น 1.5" step="0.1">
-  </div>
+  <label>ความกว้าง (เมตร)</label>
+  <input type="number" id="width" placeholder="ระบุตัวเลข..." step="0.1">
   
-  <div class="input-group-custom">
-    <label>ความยาว (เมตร)</label>
-    <input type="number" id="depth" placeholder="เช่น 1.5" step="0.1">
-  </div>
+  <label>ความยาว (เมตร)</label>
+  <input type="number" id="depth" placeholder="ระบุตัวเลข..." step="0.1">
   
-  <div class="input-group-custom">
-    <label>ความสูง (เมตร)</label>
-    <input type="number" id="height" placeholder="เช่น 1.5" step="0.1">
-  </div>
+  <label>ความสูง (เมตร)</label>
+  <input type="number" id="height" placeholder="ระบุตัวเลข..." step="0.1">
   
   <button class="main-btn" onclick="calculate()">กดเพื่อคำนวณ</button>
   
   <div id="result-area">
     <div class="res-item">
-      <span class="res-label">Pre-pupa ที่ต้องใช้:</span><br>
+      <span class="res-label">Pre-pupa (หนอนดำ) หรือ Pupa (ดัแด้) ที่ต้องใช้:</span><br>
       <span id="prepupaWeight" class="res-value">0</span> <strong>กรัม</strong>
     </div>
     <div class="res-item">
@@ -114,13 +131,19 @@
     </div>
   </div>
 
-  <a href="https://nopphasuls-ops.github.io/bsf-calc/" target="_top" class="home-btn">
-    <i class="fas fa-home"></i> กลับหน้าแรก
-  </a>
+  <div class="action-buttons">
+    <button class="reset-btn" onclick="resetForm()">
+      <i class="fas fa-undo"></i> ล้างค่า
+    </button>
+    <a href="https://nopphasuls-ops.github.io/bsf-calc/" target="_top" class="home-btn">
+      <i class="fas fa-home"></i> หน้าแรก
+    </a>
+  </div>
 
   <div class="note">
-    *คำนวณที่อัตรารอด 80%, ตัวเมีย 50%, ไข่ 600 ฟอง/ตัว<br>
-    ประมาณการโดย AI และงานวิจัยที่เกี่ยวข้อง
+    *คำนวณที่อัตรารอด 80%, ตัวเมีย 50%, ไข่ 600 ฟอง/ตัว ซึ่งเป็นอัตราต่ำสุด <br>
+    ผลลัพธ์ที่ได้จริงจะแตกต่างออกไปเนื่องจากโภชนาการและสภาพในการเลี้ยง
+    ประมาณการโดย AI และงานวิจัยที่เกี่ยวข้อง 
   </div>
 </div>
 
@@ -150,20 +173,31 @@ function calculate() {
         const volume = w * d * h;
         const targetFlies = volume * 1500;
         const totalPrepupaCount = targetFlies / 0.8;
-        const prepupaWeight = totalPrepupaCount * 0.18; // 0.18g ต่อตัว
+        const prepupaWeight = totalPrepupaCount * 0.18; 
         
         const females = (totalPrepupaCount * 0.8) * 0.5;
         const totalEggsUnits = females * 600;
-        const eggWeightTotal = totalEggsUnits / 40000; // 40,000 ฟองต่อกรัม
-        const eggWeightPerDay = eggWeightTotal / 7; // เฉลี่ยช่วงเก็บเกี่ยว 7 วัน
+        const eggWeightTotal = totalEggsUnits / 40000; 
+        const eggWeightPerDay = eggWeightTotal / 7; 
 
-        document.getElementById('result-area').style.display = 'block';
+        const resultArea = document.getElementById('result-area');
+        resultArea.style.display = 'block';
         document.getElementById('prepupaWeight').innerText = prepupaWeight.toLocaleString(undefined, {maximumFractionDigits: 0});
         document.getElementById('eggTotal').innerText = eggWeightTotal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
         document.getElementById('eggPerDay').innerText = eggWeightPerDay.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        
+        resultArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     } else {
         alert("กรุณากรอกข้อมูลขนาดโรงบินให้ครบถ้วน");
     }
+}
+
+function resetForm() {
+    document.getElementById('width').value = '';
+    document.getElementById('depth').value = '';
+    document.getElementById('height').value = '';
+    document.getElementById('result-area').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 </script>
 
